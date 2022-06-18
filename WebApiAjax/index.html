@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#calc").click(function () {
+                var x = $('#x').val();
+                var y = $('#y').val();
+                $.ajax({
+                    url: "/api/math",
+                    type: "GET",
+                    data: { x, y },
+                    success: resp => {
+                        document.getElementById("sum").textContent = resp.sum
+                        document.getElementById("difference").textContent = resp.difference
+                        document.getElementById("product").textContent = resp.product
+                        document.getElementById("quotient").textContent = resp.quotient
+                    }
+                });
+            });
+        });
+
+        document.getElementById('calc').addEventListener('click', () => {
+            const x = document.getElementById('x').value
+            const y = document.getElementById('y').value
+            fetch(`/api/math?x=${x}&y=${y}`)
+                .then(res => res.json())
+                .then(res => {
+                    document.getElementById("sum").textContent = res.sum
+                    document.getElementById("difference").textContent = res.difference
+                    document.getElementById("product").textContent = res.product
+                    document.getElementById("quotient").textContent = res.quotient
+                })
+
+        })
+    </script>
+    <div>
+        <h1>Calculations</h1>
+        <form>
+            x = <input type="text" id="x" />
+            y = <input type="text" id="y" />
+            <input type="button" id="calc" value="Calculate" />
+        </form>
+        x + y = <span id="sum"></span><br />
+        x - y = <span id="difference"></span><br />
+        x * y = <span id="product"></span><br />
+        x / y = <span id="quotient"></span><br />
+    </div>
+</body>
+</html>
